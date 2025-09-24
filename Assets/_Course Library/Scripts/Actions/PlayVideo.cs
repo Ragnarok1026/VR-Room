@@ -8,6 +8,8 @@ using UnityEngine.Video;
 [RequireComponent(typeof(VideoPlayer))]
 public class PlayVideo : MonoBehaviour
 {
+    private AudioSource audioSource;
+
     [Tooltip("Whether video should play on load")]
     public bool playAtStart = false;
 
@@ -24,9 +26,12 @@ public class PlayVideo : MonoBehaviour
 
     private void Awake()
     {
+        audioSource = GetComponent<AudioSource>();
         meshRenderer = GetComponent<MeshRenderer>();
         videoPlayer = GetComponent<VideoPlayer>();
-
+        videoPlayer.controlledAudioTrackCount = 1;
+        videoPlayer.EnableAudioTrack(0, true);
+        videoPlayer.SetTargetAudioSource(0, audioSource);
         if (videoClips.Count > 0)
             videoPlayer.clip = videoClips[0];
     }
